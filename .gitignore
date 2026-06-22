@@ -5,6 +5,9 @@ node_modules/
 # 云函数依赖（云端安装，本地不上传）
 cloudfunctions/*/node_modules/
 
+# 本地开发者工具配置
+project.private.config.json
+
 # 编辑器
 .vscode/
 .idea/
