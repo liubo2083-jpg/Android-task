@@ -1,0 +1,389 @@
+/* pages/home/home.wxss */
+
+/* ===== 页面背景 ===== */
+page {
+  background: #f8f8f8;
+}
+
+/* ===== 顶部栏 ===== */
+.header-bar {
+  background: #ffffff;
+  padding: 16rpx 28rpx;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #ff6b35;
+  margin-right: 24rpx;
+  white-space: nowrap;
+}
+
+.header-search {
+  flex: 1;
+  height: 64rpx;
+  background: #f5f5f5;
+  border-radius: 32rpx;
+  display: flex;
+  align-items: center;
+  padding: 0 24rpx;
+}
+
+.search-icon {
+  font-size: 28rpx;
+  margin-right: 12rpx;
+}
+
+.search-placeholder {
+  font-size: 26rpx;
+  color: #bbbbbb;
+}
+
+/* ===== 分类标签栏 ===== */
+.category-bar {
+  background: #ffffff;
+  white-space: nowrap;
+  padding-bottom: 8rpx;
+  position: sticky;
+  top: 96rpx;
+  z-index: 99;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.category-list {
+  display: inline-flex;
+  padding: 12rpx 20rpx;
+  gap: 12rpx;
+}
+
+.category-item {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14rpx 24rpx;
+  border-radius: 16rpx;
+  background: #f5f5f5;
+  transition: all 0.2s;
+  min-width: 100rpx;
+}
+
+.category-item.active {
+  background: #fff3ed;
+}
+
+.category-icon {
+  font-size: 32rpx;
+  margin-bottom: 4rpx;
+}
+
+.category-name {
+  font-size: 24rpx;
+  color: #666666;
+  font-weight: 500;
+}
+
+.category-item.active .category-name {
+  color: #ff6b35;
+  font-weight: 700;
+}
+
+/* ===== 加载骨架屏 ===== */
+.loading-area {
+  padding: 20rpx;
+}
+
+.skeleton-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.skeleton-card {
+  width: 48%;
+  background: #ffffff;
+  border-radius: 16rpx;
+  margin-bottom: 20rpx;
+  overflow: hidden;
+}
+
+.skeleton-img {
+  width: 100%;
+  height: 240rpx;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.skeleton-name {
+  height: 36rpx;
+  margin: 16rpx 16rpx 8rpx;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 6rpx;
+}
+
+.skeleton-price {
+  height: 32rpx;
+  width: 40%;
+  margin: 0 16rpx 20rpx;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 6rpx;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ===== 菜品滚动容器 ===== */
+.dish-scroll {
+  padding: 16rpx 20rpx;
+  min-height: 60vh;
+}
+
+/* ===== 双列网格 ===== */
+.dish-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.dish-card {
+  width: 48%;
+  background: #ffffff;
+  border-radius: 16rpx;
+  margin-bottom: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 2rpx 12rpx rgba(0,0,0,0.04);
+  transition: transform 0.15s;
+}
+
+.dish-card:active {
+  transform: scale(0.97);
+}
+
+/* 图片区域 */
+.dish-img-wrapper {
+  width: 100%;
+  height: 240rpx;
+  position: relative;
+  background: #f0f0f0;
+}
+
+.dish-img {
+  width: 100%;
+  height: 100%;
+}
+
+.dish-tag {
+  position: absolute;
+  top: 10rpx;
+  left: 10rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 8rpx;
+  font-size: 20rpx;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.dish-tag.recommend {
+  background: linear-gradient(135deg, #ff6b35, #ff8c5a);
+}
+
+.dish-tag.discount {
+  background: #e74c3c;
+  top: 44rpx;
+}
+
+/* 信息区域 */
+.dish-info {
+  padding: 14rpx 16rpx 18rpx;
+}
+
+.dish-name {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333333;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dish-meta {
+  display: flex;
+  align-items: center;
+  margin-top: 6rpx;
+  gap: 16rpx;
+}
+
+.dish-rating {
+  font-size: 22rpx;
+  color: #ff9500;
+}
+
+.dish-rating .star {
+  margin-right: 2rpx;
+}
+
+.dish-sales {
+  font-size: 22rpx;
+  color: #bbbbbb;
+}
+
+.dish-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12rpx;
+}
+
+.dish-price {
+  display: flex;
+  align-items: baseline;
+}
+
+.price-symbol {
+  font-size: 24rpx;
+  color: #ff6b35;
+  font-weight: 700;
+}
+
+.price-value {
+  font-size: 36rpx;
+  color: #ff6b35;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.price-origin {
+  font-size: 22rpx;
+  color: #cccccc;
+  text-decoration: line-through;
+  margin-left: 8rpx;
+}
+
+/* 加购按钮 */
+.add-cart-btn {
+  width: 52rpx;
+  height: 52rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff6b35, #ff8c5a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 12rpx rgba(255,107,53,0.3);
+}
+
+.add-cart-btn:active {
+  transform: scale(0.9);
+}
+
+.add-icon {
+  font-size: 36rpx;
+  color: #ffffff;
+  font-weight: 300;
+  line-height: 1;
+}
+
+/* ===== 空状态 ===== */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 24rpx;
+}
+
+.empty-text {
+  font-size: 30rpx;
+  color: #999999;
+  margin-bottom: 8rpx;
+}
+
+.empty-sub {
+  font-size: 24rpx;
+  color: #cccccc;
+}
+
+/* ===== 加载更多提示 ===== */
+.load-more-tip {
+  padding: 30rpx 0 40rpx;
+  text-align: center;
+}
+
+.loading-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12rpx;
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.loading-spinner {
+  width: 32rpx;
+  height: 32rpx;
+  border: 3rpx solid #f0f0f0;
+  border-top-color: #ff6b35;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.no-more {
+  font-size: 24rpx;
+  color: #cccccc;
+}
+
+.can-load-more {
+  font-size: 24rpx;
+  color: #bbbbbb;
+}
+
+/* ===== 错误状态 ===== */
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80rpx 40rpx;
+  text-align: center;
+}
+.error-icon { font-size: 80rpx; margin-bottom: 24rpx; }
+.error-text { font-size: 32rpx; color: #333; font-weight: 600; margin-bottom: 12rpx; }
+.error-msg { font-size: 24rpx; color: #999; line-height: 1.6; margin-bottom: 40rpx; word-break: break-all; }
+.retry-btn { width: 280rpx; height: 76rpx; line-height: 76rpx; background: #ff6b35; color: #fff; border-radius: 38rpx; font-size: 28rpx; }
+.retry-btn::after { border: none; }
+
+/* ===== 回到顶部 ===== */
+.back-top-btn {
+  position: fixed;
+  right: 30rpx;
+  bottom: 120rpx;
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  z-index: 50;
+}

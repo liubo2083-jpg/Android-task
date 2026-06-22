@@ -1,0 +1,165 @@
+<!--pages/checkout/checkout.wxml-->
+
+<!-- ============ 订单项列表 ============ -->
+<view class="section">
+  <view class="section-title">订单菜品</view>
+  <view wx:for="{{items}}" wx:key="dishId" class="order-item">
+    <image class="oi-img" src="{{item.image || '../../images/default-goods-image.png'}}" mode="aspectFill"></image>
+    <view class="oi-info">
+      <view class="oi-name">{{item.dishName}}</view>
+      <view class="oi-price">¥{{item.priceText}}</view>
+    </view>
+    <view class="oi-qty">×{{item.quantity}}</view>
+  </view>
+</view>
+
+<!-- ============ 取餐方式 ============ -->
+<view class="section">
+  <view class="section-title">取餐方式</view>
+  <view class="pickup-type-row">
+    <view class="type-tab {{pickupType === 'self' ? 'active' : ''}}" data-type="self" bindtap="switchPickupType">
+      <text class="type-icon">🚶</text>
+      <text class="type-label">到店自取</text>
+      <text class="type-check" wx:if="{{pickupType === 'self'}}">✓</text>
+    </view>
+    <view class="type-tab {{pickupType === 'delivery' ? 'active' : ''}}" data-type="delivery" bindtap="switchPickupType">
+      <text class="type-icon">🛵</text>
+      <text class="type-label">送餐到楼</text>
+      <text class="type-check" wx:if="{{pickupType === 'delivery'}}">✓</text>
+    </view>
+  </view>
+
+  <!-- 自取：选时段 -->
+  <view wx:if="{{pickupType === 'self'}}" class="pickup-option" bindtap="openTimePicker">
+    <text class="option-label">取餐时段</text>
+    <view class="option-value">
+      <text class="{{pickupTime ? '' : 'placeholder'}}">{{pickupTime || '请选择取餐时段'}}</text>
+      <text class="option-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 送餐：选地址 + 时间 -->
+  <block wx:if="{{pickupType === 'delivery'}}">
+    <view class="pickup-option" bindtap="openAddressPicker">
+      <text class="option-label">收货地址</text>
+      <view class="option-value">
+        <text class="{{selectedAddress ? '' : 'placeholder'}}">
+          {{selectedAddress ? selectedAddress.building + ' ' + selectedAddress.detail : '请选择收货地址'}}
+        </text>
+        <text class="option-arrow">›</text>
+      </view>
+    </view>
+    <view class="pickup-option">
+      <text class="option-label">配送时间</text>
+      <view class="option-value">
+        <input class="time-input" placeholder="如: 12:00-12:30" value="{{deliveryTime}}" bindinput="inputDeliveryTime" />
+      </view>
+    </view>
+  </block>
+</view>
+
+<!-- ============ 备注 ============ -->
+<view class="section">
+  <view class="section-title">备注</view>
+  <textarea class="remark-input" placeholder="口味要求、忌口等（选填）" value="{{remark}}" bindinput="inputRemark" maxlength="200" auto-height />
+</view>
+
+<!-- ============ 价格明细 ============ -->
+<view class="section">
+  <view class="section-title">价格明细</view>
+  <view class="price-row">
+    <text class="price-label">菜品合计</text>
+    <text class="price-num">¥{{totalPriceText}}</text>
+  </view>
+  <view wx:if="{{pickupType === 'delivery'}}" class="price-row">
+    <text class="price-label">配送费</text>
+    <text class="price-num">+¥{{deliveryFeeText}}</text>
+  </view>
+  <view class="price-row final">
+    <text class="price-label">应付金额</text>
+    <text class="price-num final-price">¥{{finalPriceText}}</text>
+  </view>
+</view>
+
+<!-- 底部占位 -->
+<view style="height: 140rpx;"></view>
+
+<!-- ============ 底部提交栏 ============ -->
+<view class="bottom-bar">
+  <view class="bar-price">
+    <text class="bar-label">应付</text>
+    <text class="bar-num">¥{{finalPriceText}}</text>
+  </view>
+  <button class="submit-btn" bindtap="handleSubmit" loading="{{isSubmitting}}" disabled="{{isSubmitting}}">
+    提交订单
+  </button>
+</view>
+
+<!-- ============ 自取时段选择弹窗 ============ -->
+<view wx:if="{{showTimePicker}}" class="modal-mask" bindtap="closeTimePicker">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text>选择取餐时段</text>
+      <text class="modal-close" bindtap="closeTimePicker">✕</text>
+    </view>
+    <scroll-view class="time-slot-list" scroll-y="true">
+      <view
+        wx:for="{{timeSlots}}"
+        wx:key="*this"
+        class="time-slot {{pickupTime === item ? 'selected' : ''}}"
+        data-time="{{item}}"
+        bindtap="selectTime"
+      >{{item}}</view>
+    </scroll-view>
+  </view>
+</view>
+
+<!-- ============ 地址选择弹窗 ============ -->
+<view wx:if="{{showAddressPicker}}" class="modal-mask" bindtap="closeAddressPicker">
+  <view class="modal-content" catchtap="">
+    <view class="modal-header">
+      <text>选择收货地址</text>
+      <text class="modal-close" bindtap="closeAddressPicker">✕</text>
+    </view>
+    <view wx:for="{{addresses}}" wx:key="_id" class="addr-card {{selectedAddressId === item._id ? 'selected' : ''}}" data-id="{{item._id}}" bindtap="selectAddress">
+      <view class="addr-info">
+        <view class="addr-name">{{item.name}} {{item.phone}}</view>
+        <view class="addr-detail">{{item.building}} {{item.detail}}</view>
+      </view>
+      <text wx:if="{{selectedAddressId === item._id}}" class="addr-check">✓</text>
+    </view>
+    <view class="add-addr-btn" bindtap="goAddAddress">+ 新增地址</view>
+  </view>
+</view>
+
+<!-- ============ 支付确认弹窗 ============ -->
+<view wx:if="{{showPayModal}}" class="modal-mask">
+  <view class="pay-modal" catchtap="">
+    <view class="pay-icon">💳</view>
+    <view class="pay-title">确认支付</view>
+    <view class="pay-info">
+      <view class="pay-row">
+        <text>订单号</text>
+        <text class="pay-order-no">{{createdOrder.orderNo}}</text>
+      </view>
+      <view class="pay-row">
+        <text>取餐码</text>
+        <text class="pay-code">{{createdOrder.pickupCode || '无'}}</text>
+      </view>
+      <view class="pay-row" wx:if="{{pickupType === 'delivery'}}">
+        <text>配送费</text>
+        <text>¥{{deliveryFeeText}}</text>
+      </view>
+      <view class="pay-row total">
+        <text>应付金额</text>
+        <text class="pay-final">¥{{createdOrder.payPriceText}}</text>
+      </view>
+    </view>
+    <view class="pay-actions">
+      <button class="pay-btn" bindtap="handlePay" loading="{{isPaying}}">
+        {{isPaying ? '支付中...' : createdOrder.payBtnText}}
+      </button>
+      <view class="pay-later" bindtap="closePayModal">稍后支付</view>
+    </view>
+  </view>
+</view>

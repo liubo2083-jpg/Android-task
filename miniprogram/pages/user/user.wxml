@@ -1,0 +1,66 @@
+<!--pages/user/user.wxml-->
+<view class="page-container">
+  <!-- 未登录 -->
+  <view wx:if="{{!userInfo}}" class="no-login">
+    <view class="avatar-placeholder">👤</view>
+    <view class="no-login-text">登录后享受更多服务</view>
+    <button class="login-btn" bindtap="handleLogin">微信授权登录</button>
+  </view>
+
+  <!-- 已登录 -->
+  <block wx:else>
+    <!-- 用户信息卡片 -->
+    <view class="user-card">
+      <image class="avatar" src="{{userInfo.avatarUrl || '/images/avatar.png'}}" mode="aspectFill"></image>
+      <view class="user-detail">
+        <view class="nickname">{{userInfo.nickName || '微信用户'}}</view>
+        <view class="role-tag">
+          <text class="role-label">{{isAdmin ? '管理员' : '普通用户'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 普通功能菜单 -->
+    <view class="section">
+      <view class="section-title">常用功能</view>
+      <view
+        wx:for="{{menuList}}"
+        wx:key="title"
+        class="menu-item"
+        data-url="{{item.url}}"
+        bindtap="handleMenuTap"
+      >
+        <text class="menu-icon">{{item.icon}}</text>
+        <view class="menu-info">
+          <text class="menu-title">{{item.title}}</text>
+          <text class="menu-desc">{{item.desc}}</text>
+        </view>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+
+    <!-- 管理功能菜单（仅管理员可见） -->
+    <view wx:if="{{isAdmin}}" class="section">
+      <view class="section-title">管理功能</view>
+      <view
+        wx:for="{{adminMenuList}}"
+        wx:key="title"
+        class="menu-item"
+        data-url="{{item.url}}"
+        bindtap="handleMenuTap"
+      >
+        <text class="menu-icon">{{item.icon}}</text>
+        <view class="menu-info">
+          <text class="menu-title">{{item.title}}</text>
+          <text class="menu-desc">{{item.desc}}</text>
+        </view>
+        <text class="menu-arrow">›</text>
+      </view>
+    </view>
+
+    <!-- 退出登录 -->
+    <view class="logout-btn" bindtap="handleLogout">退出登录</view>
+  </block>
+
+  <view class="version-tip">校园点餐 v1.0.0</view>
+</view>

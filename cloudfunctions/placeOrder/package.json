@@ -1,0 +1,9 @@
+{
+  "name": "placeOrder",
+  "version": "1.0.0",
+  "description": "下单云函数(订单生成/库存扣减/取餐码)",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

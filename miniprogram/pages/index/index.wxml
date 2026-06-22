@@ -1,0 +1,44 @@
+<!--index.wxml-->
+<view class="container">
+  <view class="title">快速了解云开发</view>
+  <view class="top_tip">免鉴权接口调用 免部署后台 高并发</view>
+  <view class="power" wx:key="title" wx:for="{{powerList}}" wx:for-item="power">
+    <view class="power_info" data-index="{{index}}" data-type="{{ power.type }}" bindtap="onClickPowerInfo">
+      <view class="power_info_text">
+        <view class="power_info_text_title">
+          {{power.title}}
+          <view class="power_info_text_tag" wx:if="{{power.tag}}">{{power.tag}}</view>
+        </view>
+        <view class="power_info_text_tip">{{power.tip}}</view>
+      </view>
+      <image wx:if="{{!power.showItem && power.item.length}}" class="power_info_more" src="../../images/arrow.svg"></image>
+      <image wx:if="{{power.showItem && power.item.length}}" class="power_info_less" src="../../images/arrow.svg"></image>
+      <image wx:if="{{!power.item.length}}" class="power_item_icon" src="../../images/arrow.svg"></image>
+    </view>
+    <view wx:if="{{power.showItem}}">
+      <view wx:key="title" wx:for="{{power.item}}">
+        <view class="line"></view>
+        <view class="power_item" bindtap="jumpPage" data-type="{{ item.type }}" data-page="{{item.page}}">
+          <view class="power_item_title">{{item.title}}</view>
+          <image class="power_item_icon" src="../../images/arrow.svg"></image>
+        </view>
+      </view>
+    </view>
+  </view>
+  <cloud-tip-modal showTipProps="{{showTip}}" title="{{title}}" content="{{content}}"></cloud-tip-modal>
+  <view class="test-section">
+    <view class="test-title">云函数验证</view>
+    <button class="test-btn" bindtap="testLogin">1. login 登录</button>
+    <text class="test-result">{{loginResult}}</text>
+    <button class="test-btn" bindtap="testDishes">2. dishes 菜品列表</button>
+    <text class="test-result">{{dishesResult}}</text>
+    <button class="test-btn" bindtap="testCart">3. cart 加购物车</button>
+    <text class="test-result">{{cartResult}}</text>
+    <button class="test-btn" bindtap="testPlaceOrder">4. placeOrder 下单</button>
+    <text class="test-result">{{orderResult}}</text>
+    <button class="test-btn" bindtap="testVerify">5. verifyPickup 核销</button>
+    <text class="test-result">{{verifyResult}}</text>
+    <button class="test-btn" bindtap="testCancel">6. cancelOrder 取消订单</button>
+    <text class="test-result">{{cancelResult}}</text>
+  </view>
+</view>

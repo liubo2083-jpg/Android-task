@@ -1,0 +1,9 @@
+{
+  "name": "dishes",
+  "version": "1.0.0",
+  "description": "菜品管理云函数(列表/详情/增删改查)",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest"
+  }
+}

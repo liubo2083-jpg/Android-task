@@ -1,0 +1,63 @@
+<!--pages/cart/cart.wxml-->
+<view class="page-container">
+  <!-- 未登录 -->
+  <view wx:if="{{!userInfo}}" class="no-login">
+    <view class="no-login-icon">🛒</view>
+    <view class="no-login-text">登录后查看购物车</view>
+    <button class="login-btn" bindtap="handleLogin">微信授权登录</button>
+  </view>
+
+  <!-- 空购物车 -->
+  <view wx:elif="{{!isLoading && isEmpty}}" class="empty-cart">
+    <view class="empty-icon">🛒</view>
+    <view class="empty-text">购物车空空的</view>
+    <view class="empty-sub">去首页逛逛吧~</view>
+    <button class="go-home-btn" bindtap="onGoHome">去逛逛</button>
+  </view>
+
+  <!-- 购物车列表 -->
+  <block wx:else>
+    <view class="cart-list">
+      <view wx:for="{{cartList}}" wx:key="_id" class="cart-item">
+        <!-- 勾选框 -->
+        <view class="select-btn" data-id="{{item._id}}" data-selected="{{item.selected}}" bindtap="toggleSelect">
+          <text>{{item.selected ? '✅' : '⭕'}}</text>
+        </view>
+
+        <!-- 图片 -->
+        <image class="item-img" src="{{item.dishImage || '../../images/default-goods-image.png'}}" mode="aspectFill"></image>
+
+        <!-- 信息 -->
+        <view class="item-info">
+          <view class="item-name">{{item.dishName}}</view>
+          <view class="item-price">¥{{item.priceText}}</view>
+        </view>
+
+        <!-- 数量控制 -->
+        <view class="quantity-ctrl">
+          <view class="qty-btn" data-id="{{item._id}}" data-quantity="{{item.quantity}}" data-type="minus" bindtap="changeQuantity">-</view>
+          <text class="qty-num">{{item.quantity}}</text>
+          <view class="qty-btn" data-id="{{item._id}}" data-quantity="{{item.quantity}}" data-type="plus" bindtap="changeQuantity">+</view>
+        </view>
+
+        <!-- 删除 -->
+        <view class="remove-btn" data-id="{{item._id}}" bindtap="removeItem">🗑️</view>
+      </view>
+    </view>
+
+    <!-- 底部结算栏 -->
+    <view class="bottom-bar">
+      <view class="select-all" bindtap="toggleAll">
+        <text>{{allSelected ? '✅' : '⭕'}}</text>
+        <text>全选</text>
+      </view>
+      <view class="total-info">
+        <text class="total-label">合计:</text>
+        <text class="total-price">¥{{totalPriceText}}</text>
+      </view>
+      <button class="checkout-btn" bindtap="goCheckout" disabled="{{totalCount === 0}}">
+        去结算({{totalCount}})
+      </button>
+    </view>
+  </block>
+</view>

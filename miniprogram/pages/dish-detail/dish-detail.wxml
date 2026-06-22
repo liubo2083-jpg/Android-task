@@ -1,0 +1,110 @@
+<!--pages/dish-detail/dish-detail.wxml-->
+
+<!-- 加载中 -->
+<view wx:if="{{isLoading}}" class="loading-page">
+  <view class="loading-spinner-lg"></view>
+  <text class="loading-text">加载中...</text>
+</view>
+
+<view wx:else class="detail-page">
+  <!-- 菜品大图 -->
+  <view class="image-section">
+    <image
+      class="main-image"
+      src="{{dish.image || '../../images/default-goods-image.png'}}"
+      mode="aspectFill"
+      bindtap="handlePreviewImage"
+    ></image>
+    <view wx:if="{{!dish.isOnSale}}" class="off-shelf-mask">
+      <text>已下架</text>
+    </view>
+  </view>
+
+  <!-- 基本信息 -->
+  <view class="info-section">
+    <view class="info-header">
+      <view class="dish-name">{{dish.name}}</view>
+      <view wx:if="{{dish.isRecommend}}" class="tag-recommend">推荐</view>
+    </view>
+
+    <view class="dish-meta-row">
+      <view class="meta-item" wx:if="{{dish.rating > 0}}">
+        <text class="star">⭐</text>
+        <text class="rating-text">{{dish.ratingText}}</text>
+        <text class="rating-count">({{dish.ratingCount}}条评价)</text>
+      </view>
+      <view class="meta-item">
+        <text>已售 {{dish.salesVolume || 0}} 份</text>
+      </view>
+      <view class="meta-item stock {{dish.stock <= 10 ? 'low-stock' : ''}}">
+        <text>库存: {{dish.stock}} 份</text>
+      </view>
+    </view>
+
+    <!-- 价格 -->
+    <view class="price-section">
+      <view class="current-price">
+        <text class="symbol">¥</text>
+        <text class="value">{{dish.priceText}}</text>
+      </view>
+      <view wx:if="{{dish.originPriceText}}" class="original-price">
+        <text>¥{{dish.originPriceText}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 菜品详情 -->
+  <view class="detail-section">
+    <view class="section-title">菜品详情</view>
+    <view class="section-content">
+      <view wx:if="{{dish.description}}" class="desc-text">{{dish.description}}</view>
+      <view wx:if="{{dish.ingredients}}" class="detail-item">
+        <text class="detail-label">主要配料：</text>
+        <text class="detail-value">{{dish.ingredients}}</text>
+      </view>
+      <view wx:if="{{dish.nutrition}}" class="nutrition-row">
+        <view class="nutrition-item">
+          <text class="nutri-value">{{dish.nutrition.calories || '-'}}</text>
+          <text class="nutri-label">热量(kcal)</text>
+        </view>
+        <view class="nutrition-item">
+          <text class="nutri-value">{{dish.nutrition.protein || '-'}}g</text>
+          <text class="nutri-label">蛋白质</text>
+        </view>
+        <view class="nutrition-item">
+          <text class="nutri-value">{{dish.nutrition.fat || '-'}}g</text>
+          <text class="nutri-label">脂肪</text>
+        </view>
+        <view class="nutrition-item">
+          <text class="nutri-value">{{dish.nutrition.carbs || '-'}}g</text>
+          <text class="nutri-label">碳水</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部占位（给操作栏留空间） -->
+  <view style="height: 120rpx;"></view>
+</view>
+
+<!-- 底部操作栏 -->
+<view wx:if="{{!isLoading && dish}}" class="bottom-bar">
+  <view class="quantity-control">
+    <view class="qc-btn {{quantity <= 1 ? 'disabled' : ''}}" bindtap="handleDecrease">
+      <text>-</text>
+    </view>
+    <view class="qc-number">{{quantity}}</view>
+    <view class="qc-btn {{!canAdd || quantity >= dish.stock ? 'disabled' : ''}}" bindtap="handleIncrease">
+      <text>+</text>
+    </view>
+  </view>
+
+  <view class="action-buttons">
+    <button class="btn-cart" bindtap="handleAddCart" disabled="{{!dish.isOnSale}}">
+      {{dish.isOnSale ? '加入购物车' : '已下架'}}
+    </button>
+    <button class="btn-buy" bindtap="handleBuyNow" disabled="{{!dish.isOnSale}}">
+      立即购买
+    </button>
+  </view>
+</view>

@@ -1,0 +1,115 @@
+<!--pages/home/home.wxml-->
+
+<!-- 顶部搜索栏 -->
+<view class="header-bar">
+  <view class="header-title">校园点餐</view>
+  <view class="header-search" bindtap="onSearchTap">
+    <text class="search-icon">🔍</text>
+    <text class="search-placeholder">搜索菜品...</text>
+  </view>
+</view>
+
+<!-- 分类标签栏（横向滚动） -->
+<scroll-view wx:if="{{categories.length > 0}}" class="category-bar" scroll-x="true" enhanced show-scrollbar="{{false}}">
+  <view class="category-list">
+    <view
+      wx:for="{{categories}}"
+      wx:key="_id"
+      class="category-item {{activeCategoryId === item._id ? 'active' : ''}}"
+      data-id="{{item._id}}"
+      bindtap="handleCategoryTap"
+    >
+      <text class="category-icon">{{item.icon === 'star' ? '⭐' : item.icon === 'rice' ? '🍚' : item.icon === 'stir' ? '🍳' : item.icon === 'noodle' ? '🍜' : item.icon === 'ricebowl' ? '🍛' : item.icon === 'drink' ? '🥤' : item.icon === 'breakfast' ? '🥟' : '🍽️'}}</text>
+      <text class="category-name">{{item.name}}</text>
+    </view>
+  </view>
+</scroll-view>
+
+<!-- 首次加载骨架屏 -->
+<view wx:if="{{isLoading}}" class="loading-area">
+  <view class="skeleton-grid">
+    <view class="skeleton-card" wx:for="{{6}}" wx:key="index">
+      <view class="skeleton-img"></view>
+      <view class="skeleton-name"></view>
+      <view class="skeleton-price"></view>
+    </view>
+  </view>
+</view>
+
+<!-- 加载失败（云函数未部署/数据库未初始化） -->
+<view wx:elif="{{isError && isEmpty}}" class="error-state">
+  <view class="error-icon">😵</view>
+  <view class="error-text">加载失败</view>
+  <view class="error-msg">{{errorMsg}}</view>
+  <button class="retry-btn" bindtap="handleRetry">点击重试</button>
+</view>
+
+<!-- 空菜品列表 -->
+<view wx:elif="{{isEmpty && !isError}}" class="empty-state">
+  <view class="empty-icon">🍽️</view>
+  <view class="empty-text">该分类暂无菜品</view>
+  <view class="empty-sub">请试试其他分类吧~</view>
+</view>
+
+<!-- 菜品双列网格 -->
+<view wx:else class="dish-scroll">
+  <view class="dish-grid">
+    <view
+      wx:for="{{dishList}}"
+      wx:key="_id"
+      class="dish-card"
+      data-id="{{item._id}}"
+      bindtap="handleDishTap"
+    >
+      <!-- 菜品图片 -->
+      <view class="dish-img-wrapper">
+        <image
+          class="dish-img"
+          src="{{item.image || '../../images/default-goods-image.png'}}"
+          mode="aspectFill"
+          lazy-load="{{true}}"
+        ></image>
+        <view wx:if="{{item.isRecommend}}" class="dish-tag recommend">推荐</view>
+        <view wx:if="{{item.discountText}}" class="dish-tag discount">{{item.discountText}}</view>
+      </view>
+
+      <!-- 菜品信息 -->
+      <view class="dish-info">
+        <view class="dish-name">{{item.name}}</view>
+        <view class="dish-meta">
+          <view class="dish-rating" wx:if="{{item.rating > 0}}">
+            <text class="star">⭐</text>
+            <text>{{item.ratingText}}</text>
+          </view>
+          <view class="dish-sales">已售{{item.salesVolume || 0}}</view>
+        </view>
+        <view class="dish-bottom">
+          <view class="dish-price">
+            <text class="price-symbol">¥</text>
+            <text class="price-value">{{item.priceText}}</text>
+            <text wx:if="{{item.originPriceText}}" class="price-origin">¥{{item.originPriceText}}</text>
+          </view>
+          <view class="add-cart-btn" catchtap="handleAddCart" data-dish="{{item}}">
+            <text class="add-icon">+</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 上拉加载更多提示 -->
+  <view class="load-more-tip" wx:if="{{dishList.length > 0}}">
+    <view wx:if="{{isLoadingMore}}" class="loading-more">
+      <view class="loading-spinner"></view>
+      <text>加载更多中...</text>
+    </view>
+    <view wx:elif="{{!hasMore}}" class="no-more">— 已经到底了 —</view>
+  </view>
+
+  <view style="height: 40rpx;"></view>
+</view>
+
+<!-- 回到顶部按钮 -->
+<view wx:if="{{dishList.length > 6}}" class="back-top-btn" bindtap="onBackTop">
+  <text>⬆️</text>
+</view>

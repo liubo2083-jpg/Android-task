@@ -1,0 +1,148 @@
+/* pages/login/login.wxss */
+
+.login-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(180deg, #ff6b35 0%, #ff8c5a 30%, #fff5f0 60%, #ffffff 100%);
+  padding: 0 40rpx;
+  box-sizing: border-box;
+}
+
+/* ===== 品牌区 ===== */
+.brand-area {
+  margin-top: 160rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logo-wrapper {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 32rpx;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 32rpx rgba(255, 107, 53, 0.3);
+}
+
+.logo {
+  width: 90rpx;
+  height: 90rpx;
+}
+
+.app-name {
+  margin-top: 28rpx;
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 4rpx;
+  text-shadow: 0 2rpx 8rpx rgba(0,0,0,0.1);
+}
+
+.app-slogan {
+  margin-top: 12rpx;
+  font-size: 28rpx;
+  color: rgba(255,255,255,0.9);
+}
+
+/* ===== 功能亮点 ===== */
+.feature-list {
+  width: 100%;
+  margin-top: 80rpx;
+  background: #ffffff;
+  border-radius: 20rpx;
+  padding: 32rpx 28rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.06);
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+}
+.feature-item:not(:last-child) {
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.feature-icon {
+  font-size: 44rpx;
+  margin-right: 24rpx;
+  width: 60rpx;
+  text-align: center;
+}
+
+.feature-text {
+  flex: 1;
+}
+
+.feature-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333333;
+}
+
+.feature-desc {
+  font-size: 24rpx;
+  color: #999999;
+  margin-top: 4rpx;
+}
+
+/* ===== 登录按钮 ===== */
+.action-area {
+  width: 100%;
+  margin-top: 80rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-btn {
+  width: 100%;
+  height: 96rpx;
+  line-height: 96rpx;
+  background: #ff6b35;
+  border-radius: 48rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #ffffff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 28rpx rgba(255, 107, 53, 0.35);
+  transition: all 0.2s;
+}
+
+.login-btn.loading {
+  opacity: 0.7;
+}
+
+.login-btn::after {
+  border: none;
+}
+
+.wechat-icon {
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 16rpx;
+}
+
+.skip-link {
+  margin-top: 36rpx;
+  font-size: 26rpx;
+  color: #999999;
+  padding: 12rpx 24rpx;
+}
+
+/* ===== 底部 ===== */
+.footer-tip {
+  margin-top: auto;
+  padding: 40rpx 0 60rpx;
+  font-size: 22rpx;
+  color: #cccccc;
+  text-align: center;
+}

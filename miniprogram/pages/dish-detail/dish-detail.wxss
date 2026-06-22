@@ -1,0 +1,308 @@
+/* pages/dish-detail/dish-detail.wxss */
+
+page {
+  background: #f8f8f8;
+}
+
+/* ===== 加载页 ===== */
+.loading-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 20rpx;
+}
+
+.loading-spinner-lg {
+  width: 60rpx;
+  height: 60rpx;
+  border: 4rpx solid #f0f0f0;
+  border-top-color: #ff6b35;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.loading-text {
+  font-size: 26rpx;
+  color: #999999;
+}
+
+/* ===== 大图 ===== */
+.image-section {
+  width: 100%;
+  height: 500rpx;
+  position: relative;
+  background: #f0f0f0;
+}
+
+.main-image {
+  width: 100%;
+  height: 100%;
+}
+
+.off-shelf-mask {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* ===== 基本信息 ===== */
+.info-section {
+  background: #ffffff;
+  margin: 16rpx 20rpx;
+  border-radius: 16rpx;
+  padding: 24rpx;
+}
+
+.info-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.dish-name {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #333333;
+  flex: 1;
+}
+
+.tag-recommend {
+  padding: 4rpx 16rpx;
+  border-radius: 8rpx;
+  background: linear-gradient(135deg, #ff6b35, #ff8c5a);
+  color: #ffffff;
+  font-size: 22rpx;
+  font-weight: 600;
+}
+
+.dish-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  margin-bottom: 20rpx;
+}
+
+.meta-item {
+  font-size: 24rpx;
+  color: #888888;
+}
+
+.star {
+  margin-right: 4rpx;
+}
+
+.rating-text {
+  color: #ff9500;
+  font-weight: 600;
+}
+
+.rating-count {
+  color: #bbbbbb;
+  margin-left: 4rpx;
+}
+
+.stock.low-stock {
+  color: #e74c3c;
+}
+
+.price-section {
+  display: flex;
+  align-items: baseline;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #f5f5f5;
+}
+
+.current-price {
+  display: flex;
+  align-items: baseline;
+}
+
+.current-price .symbol {
+  font-size: 28rpx;
+  color: #ff6b35;
+  font-weight: 700;
+}
+
+.current-price .value {
+  font-size: 48rpx;
+  color: #ff6b35;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.original-price {
+  margin-left: 16rpx;
+  font-size: 26rpx;
+  color: #cccccc;
+  text-decoration: line-through;
+}
+
+/* ===== 详情 ===== */
+.detail-section {
+  background: #ffffff;
+  margin: 0 20rpx 16rpx;
+  border-radius: 16rpx;
+  padding: 24rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #333333;
+  margin-bottom: 20rpx;
+  padding-left: 16rpx;
+  border-left: 6rpx solid #ff6b35;
+}
+
+.desc-text {
+  font-size: 28rpx;
+  color: #555555;
+  line-height: 1.7;
+  margin-bottom: 20rpx;
+}
+
+.detail-item {
+  display: flex;
+  margin-bottom: 12rpx;
+}
+
+.detail-label {
+  font-size: 26rpx;
+  color: #999999;
+  flex-shrink: 0;
+}
+
+.detail-value {
+  font-size: 26rpx;
+  color: #555555;
+  line-height: 1.6;
+}
+
+/* 营养成分 */
+.nutrition-row {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 24rpx;
+  padding: 20rpx;
+  background: #fafafa;
+  border-radius: 12rpx;
+}
+
+.nutrition-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nutri-value {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #333333;
+}
+
+.nutri-label {
+  font-size: 22rpx;
+  color: #bbbbbb;
+  margin-top: 4rpx;
+}
+
+/* ===== 底部操作栏 ===== */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  padding: 16rpx 24rpx;
+  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  box-shadow: 0 -2rpx 16rpx rgba(0,0,0,0.04);
+  z-index: 100;
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+  gap: 4rpx;
+}
+
+.qc-btn {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  color: #333333;
+}
+
+.qc-btn.disabled {
+  color: #cccccc;
+  background: #fafafa;
+}
+
+.qc-btn:active:not(.disabled) {
+  background: #e8e8e8;
+}
+
+.qc-number {
+  width: 72rpx;
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #333333;
+}
+
+.action-buttons {
+  flex: 1;
+  display: flex;
+  gap: 16rpx;
+}
+
+.btn-cart, .btn-buy {
+  flex: 1;
+  height: 80rpx;
+  line-height: 80rpx;
+  border-radius: 40rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  text-align: center;
+  padding: 0;
+  border: none;
+}
+
+.btn-cart {
+  background: #fff5f0;
+  color: #ff6b35;
+  border: 2rpx solid #ff6b35;
+}
+
+.btn-cart::after { border: none; }
+
+.btn-buy {
+  background: linear-gradient(135deg, #ff6b35, #ff8c5a);
+  color: #ffffff;
+}
+
+.btn-buy::after { border: none; }
+
+.btn-cart[disabled], .btn-buy[disabled] {
+  opacity: 0.4;
+  background: #e0e0e0;
+  color: #999999;
+  border-color: #e0e0e0;
+}

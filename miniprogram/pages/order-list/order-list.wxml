@@ -1,0 +1,57 @@
+<!--pages/order-list/order-list.wxml-->
+<view class="page-container">
+  <!-- 未登录 -->
+  <view wx:if="{{!userInfo}}" class="no-login">
+    <view class="no-login-icon">📋</view>
+    <view class="no-login-text">登录后查看订单</view>
+    <button class="login-btn" bindtap="handleLogin">微信授权登录</button>
+  </view>
+
+  <!-- 已登录 -->
+  <block wx:else>
+    <!-- 状态筛选栏 -->
+    <scroll-view class="tab-bar" scroll-x="true" enhanced show-scrollbar="{{false}}">
+      <view class="tab-list">
+        <view
+          wx:for="{{tabs}}"
+          wx:key="key"
+          class="tab-item {{currentTab === item.key ? 'active' : ''}}"
+          data-tab="{{item.key}}"
+          bindtap="switchTab"
+        >{{item.label}}</view>
+      </view>
+    </scroll-view>
+
+    <!-- 订单列表 -->
+    <view wx:if="{{isLoading}}" class="loading-tip">加载中...</view>
+    <view wx:elif="{{isEmpty}}" class="empty-tip">
+      <view class="empty-icon">📭</view>
+      <view>暂无订单</view>
+    </view>
+    <view wx:else class="order-list">
+      <view
+        wx:for="{{orderList}}"
+        wx:key="_id"
+        class="order-card"
+        data-id="{{item._id}}"
+        bindtap="goDetail"
+      >
+        <view class="order-header">
+          <text class="order-no">订单号: {{item.orderNo}}</text>
+          <text class="order-status {{item.status}}">
+            {{item.status === 'pending_pay' ? '待支付' : item.status === 'paid' ? '已支付' : item.status === 'completed' ? '已完成' : '已取消'}}
+          </text>
+        </view>
+        <view class="order-dishes">
+          <text wx:for="{{item.items}}" wx:key="dishId" wx:for-item="d">
+            {{d.dishName}}×{{d.quantity}}
+          </text>
+        </view>
+        <view class="order-footer">
+          <text class="order-time">{{item.timeText}}</text>
+          <text class="order-price">¥{{item.priceText}}</text>
+        </view>
+      </view>
+    </view>
+  </block>
+</view>

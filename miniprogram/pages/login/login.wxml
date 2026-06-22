@@ -1,0 +1,58 @@
+<!--pages/login/login.wxml-->
+<view class="login-container">
+  <!-- 顶部品牌区 -->
+  <view class="brand-area">
+    <view class="logo-wrapper">
+      <image class="logo" src="../../images/icons/goods-active.png" mode="aspectFit"></image>
+    </view>
+    <view class="app-name">校园点餐</view>
+    <view class="app-slogan">美味不用等，点餐更轻松</view>
+  </view>
+
+  <!-- 功能亮点 -->
+  <view class="feature-list">
+    <view class="feature-item">
+      <view class="feature-icon">📋</view>
+      <view class="feature-text">
+        <view class="feature-title">在线点餐</view>
+        <view class="feature-desc">提前下单，到店即取</view>
+      </view>
+    </view>
+    <view class="feature-item">
+      <view class="feature-icon">🚀</view>
+      <view class="feature-text">
+        <view class="feature-title">快速取餐</view>
+        <view class="feature-desc">取餐码核销，免排队</view>
+      </view>
+    </view>
+    <view class="feature-item">
+      <view class="feature-icon">📦</view>
+      <view class="feature-text">
+        <view class="feature-title">预约配送</view>
+        <view class="feature-desc">送餐到楼，省时省力</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 登录按钮区 -->
+  <view class="action-area">
+    <button
+      class="login-btn {{isLoading ? 'loading' : ''}}"
+      type="primary"
+      bindtap="handleLogin"
+      loading="{{isLoading}}"
+      disabled="{{isLoading}}"
+    >
+      <image class="wechat-icon" src="../../images/icons/avatar.png" mode="aspectFit"></image>
+      微信授权登录
+    </button>
+    <view class="skip-link" bindtap="handleSkip">
+      暂不登录，先看看有什么好吃的 →
+    </view>
+  </view>
+
+  <!-- 底部提示 -->
+  <view class="footer-tip">
+    <text>登录即表示同意《用户协议》和《隐私政策》</text>
+  </view>
+</view>

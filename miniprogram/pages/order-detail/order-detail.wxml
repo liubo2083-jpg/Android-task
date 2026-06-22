@@ -1,0 +1,127 @@
+<!--pages/order-detail/order-detail.wxml-->
+
+<!-- 加载中 -->
+<view wx:if="{{isLoading}}" class="loading-page">
+  <view class="loading-spinner-lg"></view>
+  <text>加载中...</text>
+</view>
+
+<!-- 错误 -->
+<view wx:elif="{{isError}}" class="error-page">
+  <text class="error-icon">😵</text>
+  <text>{{errorMsg}}</text>
+</view>
+
+<!-- 订单内容 -->
+<view wx:else class="detail-page">
+
+  <!-- ===== 订单状态头部 ===== -->
+  <view class="status-header status-{{order.status}}">
+    <text class="status-icon">
+      {{order.status === 'pending_pay' ? '⏳' : order.status === 'paid' ? '✅' : order.status === 'completed' ? '🎉' : '❌'}}
+    </text>
+    <text class="status-title">{{statusText}}</text>
+    <text wx:if="{{order.status === 'pending_pay'}}" class="status-hint">请尽快完成支付</text>
+    <text wx:elif="{{order.status === 'paid' && order.pickupType === 'self'}}" class="status-hint">请凭取餐码到窗口取餐</text>
+  </view>
+
+  <!-- ===== 取餐凭证（自取订单已支付后突出展示） ===== -->
+  <view wx:if="{{order.pickupType === 'self' && order.pickupCode}}" class="pickup-section">
+    <view class="pickup-label">取餐凭证</view>
+    <view class="pickup-code-box">
+      <text class="pickup-code">{{order.pickupCode}}</text>
+    </view>
+    <view class="pickup-actions">
+      <view class="copy-btn {{codeCopied ? 'copied' : ''}}" bindtap="handleCopyCode">
+        {{codeCopied ? '✓ 已复制' : '📋 复制取餐码'}}
+      </view>
+    </view>
+    <view class="pickup-tip">请到食堂窗口出示取餐码，由管理员核销后取餐</view>
+  </view>
+
+  <!-- ===== 订单信息 ===== -->
+  <view class="section">
+    <view class="section-title">订单信息</view>
+    <view class="info-row">
+      <text class="info-label">订单编号</text>
+      <text class="info-value mono">{{order.orderNo}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">下单时间</text>
+      <text class="info-value">{{createTimeText}}</text>
+    </view>
+    <view class="info-row" wx:if="{{order.pickupType === 'self'}}">
+      <text class="info-label">取餐方式</text>
+      <text class="info-value">🚶 到店自取</text>
+    </view>
+    <view class="info-row" wx:if="{{order.pickupType === 'self' && order.pickupTime}}">
+      <text class="info-label">取餐时段</text>
+      <text class="info-value orange">{{order.pickupTime}}</text>
+    </view>
+    <view class="info-row" wx:if="{{order.pickupType === 'delivery'}}">
+      <text class="info-label">取餐方式</text>
+      <text class="info-value">🛵 送餐到楼</text>
+    </view>
+    <view wx:if="{{order.pickupType === 'delivery' && order.addressSnapshot}}" class="info-row">
+      <text class="info-label">收货地址</text>
+      <text class="info-value">{{order.addressSnapshot.building}} {{order.addressSnapshot.detail}} ({{order.addressSnapshot.name}})</text>
+    </view>
+    <view class="info-row" wx:if="{{order.remark}}">
+      <text class="info-label">备注</text>
+      <text class="info-value">{{order.remark}}</text>
+    </view>
+  </view>
+
+  <!-- ===== 菜品列表 ===== -->
+  <view class="section">
+    <view class="section-title">订单菜品</view>
+    <view wx:for="{{order.items}}" wx:key="dishId" class="item-row">
+      <image class="item-img" src="{{item.image || '../../images/default-goods-image.png'}}" mode="aspectFill"></image>
+      <view class="item-info">
+        <view class="item-name">{{item.dishName}}</view>
+        <view class="item-detail">¥{{item.priceText}} × {{item.quantity}}</view>
+      </view>
+      <view class="item-subtotal">¥{{item.subtotalText}}</view>
+    </view>
+  </view>
+
+  <!-- ===== 价格明细 ===== -->
+  <view class="section">
+    <view class="section-title">价格明细</view>
+    <view class="price-row">
+      <text class="price-label">菜品合计</text>
+      <text>¥{{totalPriceText}}</text>
+    </view>
+    <view wx:if="{{order.deliveryFee > 0}}" class="price-row">
+      <text class="price-label">配送费</text>
+      <text>¥{{deliveryFeeText}}</text>
+    </view>
+    <view class="price-row final">
+      <text class="price-label">实付金额</text>
+      <text class="price-value">¥{{finalPriceText}}</text>
+    </view>
+  </view>
+
+  <!-- 底部占位 -->
+  <view style="height: 150rpx;"></view>
+</view>
+
+<!-- ===== 底部操作栏 ===== -->
+<view wx:if="{{!isLoading && !isError && order}}" class="bottom-bar">
+  <block wx:if="{{canPay}}">
+    <button class="bar-btn cancel" bindtap="handleCancel" disabled="{{isOperating}}">取消订单</button>
+    <button class="bar-btn pay" bindtap="handlePay" disabled="{{isOperating}}">
+      {{isOperating ? '处理中...' : '微信支付 ¥' + finalPriceText}}
+    </button>
+  </block>
+  <block wx:elif="{{canConfirm}}">
+    <button class="bar-btn confirm" bindtap="handleConfirm" disabled="{{isOperating}}">确认收货</button>
+  </block>
+  <block wx:else>
+    <view class="bar-info">
+      <text wx:if="{{order.status === 'completed'}}">订单已完成</text>
+      <text wx:elif="{{order.status === 'cancelled'}}">订单已取消</text>
+      <text wx:else>订单{{statusText}}</text>
+    </view>
+  </block>
+</view>
