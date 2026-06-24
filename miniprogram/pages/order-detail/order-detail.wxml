@@ -117,11 +117,12 @@
   <block wx:elif="{{canConfirm}}">
     <button class="bar-btn confirm" bindtap="handleConfirm" disabled="{{isOperating}}">确认收货</button>
   </block>
-  <block wx:else>
-    <view class="bar-info">
-      <text wx:if="{{order.status === 'completed'}}">订单已完成</text>
-      <text wx:elif="{{order.status === 'cancelled'}}">订单已取消</text>
-      <text wx:else>订单{{statusText}}</text>
-    </view>
+  <block wx:elif="{{canDelete}}">
+    <button class="bar-btn delete" bindtap="handleDeleteOrder" disabled="{{isOperating}}">删除订单</button>
+    <block wx:if="{{canReview}}">
+      <button wx:if="{{!hasReviewed}}" class="bar-btn review" bindtap="handleReview" disabled="{{isOperating}}">去评价</button>
+      <view wx:else class="bar-info">已评价</view>
+    </block>
+    <view wx:else class="bar-info">订单已取消</view>
   </block>
 </view>

@@ -1,0 +1,72 @@
+<view class="page">
+  <view wx:if="{{isLoading}}" class="loading-page">
+    <view class="loading-spinner"></view>
+    <text>加载中...</text>
+  </view>
+
+  <view wx:else class="container">
+    <!-- 订单号 -->
+    <view class="order-info">
+      <text class="label">订单号</text>
+      <text class="value mono">{{order.orderNo}}</text>
+    </view>
+
+    <!-- 逐个菜品评价 -->
+    <view wx:for="{{reviews}}" wx:for-item="item" wx:key="dishId" class="review-card">
+      <view class="dish-row">
+        <image class="dish-img" src="{{item.dishImage || '../../images/default-goods-image.png'}}" mode="aspectFill" />
+        <text class="dish-name">{{item.dishName}}</text>
+      </view>
+
+      <!-- 评分 -->
+      <view class="field-row">
+        <text class="field-label">评分</text>
+        <view class="stars">
+          <view wx:for="{{5}}" wx:for-item="star" wx:key="*this"
+                class="star {{star < item.rating ? 'active' : ''}}"
+                data-dishid="{{item.dishId}}"
+                data-score="{{star + 1}}"
+                bindtap="setRating">★</view>
+        </view>
+      </view>
+
+      <!-- 文字评价 -->
+      <view class="field-row">
+        <text class="field-label">评价</text>
+        <textarea class="review-input"
+                  placeholder="说说这道菜怎么样（选填）"
+                  value="{{item.content}}"
+                  data-dishid="{{item.dishId}}"
+                  bindinput="onContentInput"
+                  auto-height />
+      </view>
+
+      <!-- 图片上传 -->
+      <view class="field-row">
+        <text class="field-label">晒图</text>
+        <view class="img-list">
+          <view wx:for="{{item.images}}" wx:for-item="img" wx:key="*this" class="img-item">
+            <image class="img-preview" src="{{img}}" mode="aspectFill" />
+            <view class="img-del" data-dishid="{{item.dishId}}" data-index="{{index}}" bindtap="removeImage">×</view>
+          </view>
+          <view wx:if="{{item.images.length < 3 && !item.uploading}}"
+                class="img-btn"
+                data-dishid="{{item.dishId}}"
+                bindtap="chooseImage">
+            <text class="img-btn-icon">+</text>
+          </view>
+          <view wx:if="{{item.uploading}}" class="img-btn uploading">
+            <text class="img-btn-icon">...</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 提交 -->
+    <button class="submit-btn" bindtap="submitReviews" disabled="{{submitting}}">
+      {{submitting ? '提交中...' : '提交评价'}}
+    </button>
+
+    <view style="height: 40rpx;"></view>
+  </view>
+</view>

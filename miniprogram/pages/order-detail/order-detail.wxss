@@ -61,5 +61,7 @@ page { background: #f8f8f8; }
 .bar-btn.cancel { background: #f5f5f5; color: #666; }
 .bar-btn.pay { background: linear-gradient(135deg, #07c160, #06ad56); color: #fff; }
 .bar-btn.confirm { background: linear-gradient(135deg, #ff6b35, #ff8c5a); color: #fff; flex: 2; }
+.bar-btn.delete { background: #fff; color: #e74c3c; border: 2rpx solid #e74c3c; }
+.bar-btn.review { background: linear-gradient(135deg, #ff6b35, #ff8c5a); color: #fff; }
 .bar-btn[disabled] { opacity: 0.5; }
 .bar-info { flex: 1; text-align: center; line-height: 82rpx; font-size: 28rpx; color: #999; }

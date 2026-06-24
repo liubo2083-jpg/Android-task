@@ -9,6 +9,7 @@
     "pages/cart/cart",
     "pages/address/address",
     "pages/user/user",
+    "pages/review/review",
     "pages/index/index",
     "pages/example/index"
   ],

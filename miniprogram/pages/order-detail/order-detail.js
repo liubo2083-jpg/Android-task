@@ -30,6 +30,9 @@ Page({
     canPay: false,
     canCancel: false,
     canConfirm: false,
+    canDelete: false,
+    canReview: false,
+    hasReviewed: false,
     isOperating: false,
 
     // 取餐码复制
@@ -37,10 +40,18 @@ Page({
   },
 
   onLoad(options) {
+    this.setData({ orderId: options.id });
     if (options.id) {
       this.loadOrder(options.id);
     } else {
       this.setData({ isLoading: false, isError: true, errorMsg: '缺少订单ID' });
+    }
+  },
+
+  onShow() {
+    // 从评价页返回时刷新评价状态
+    if (this.data.order) {
+      this.checkReviewStatus();
     }
   },
 
@@ -66,6 +77,18 @@ Page({
       const canPay = order.status === 'pending_pay';
       const canCancel = order.status === 'pending_pay';
       const canConfirm = order.pickupType === 'delivery' && order.status === 'paid';
+      const canDelete = order.status === 'completed' || order.status === 'cancelled';
+      const canReview = order.status === 'completed';
+
+      // 检查是否有评价
+      let hasReviewed = false;
+      if (order.status === 'completed') {
+        try {
+          const db = wx.cloud.database();
+          const { data } = await db.collection('reviews').where({ orderId }).limit(1).get();
+          hasReviewed = data.length > 0;
+        } catch (e) { /* 静默 */ }
+      }
 
       this.setData({
         order,
@@ -75,7 +98,7 @@ Page({
         finalPriceText: fmt(order.finalPrice),
         deliveryFeeText: fmt(order.deliveryFee || 0),
         totalPriceText: fmt(order.totalPrice),
-        canPay, canCancel, canConfirm
+        canPay, canCancel, canConfirm, canDelete, canReview, hasReviewed
       });
     } catch (err) {
       console.error('加载订单失败:', err);
@@ -156,17 +179,69 @@ Page({
         wx.showLoading({ title: '确认中...' });
 
         try {
-          const db = wx.cloud.database();
-          await db.collection('orders').doc(this.data.order._id).update({
-            data: { status: 'completed', updateTime: new Date() }
+          const cfRes = await wx.cloud.callFunction({
+            name: 'confirmOrder',
+            data: { orderId: this.data.order._id }
           });
           wx.hideLoading();
-          wx.showToast({ title: '已确认收货', icon: 'success' });
-          setTimeout(() => this.loadOrder(this.data.order._id), 500);
+
+          if (cfRes.result && cfRes.result.success) {
+            wx.showToast({ title: '已确认收货', icon: 'success' });
+            setTimeout(() => this.loadOrder(this.data.order._id), 500);
+          } else {
+            wx.showToast({ title: cfRes.result.message || '操作失败', icon: 'none' });
+          }
         } catch (err) {
           wx.hideLoading();
           wx.showToast({ title: '操作失败', icon: 'error' });
         } finally {
+          this.setData({ isOperating: false });
+        }
+      }
+    });
+  },
+
+  // ============ 去评价 ============
+  handleReview() {
+    wx.navigateTo({ url: `/pages/review/review?id=${this.data.orderId}` });
+  },
+
+  async checkReviewStatus() {
+    try {
+      const db = wx.cloud.database();
+      const { data } = await db.collection('reviews').where({ orderId: this.data.orderId }).limit(1).get();
+      this.setData({ hasReviewed: data.length > 0 });
+    } catch (e) { /* 静默 */ }
+  },
+
+  // ============ 删除订单 ============
+  async handleDeleteOrder() {
+    wx.showModal({
+      title: '删除订单',
+      content: '确定删除该订单吗？删除后不可恢复。',
+      success: async (res) => {
+        if (!res.confirm) return;
+
+        this.setData({ isOperating: true });
+        wx.showLoading({ title: '删除中...', mask: true });
+
+        try {
+          const cfRes = await wx.cloud.callFunction({
+            name: 'deleteOrder',
+            data: { orderId: this.data.order._id }
+          });
+          wx.hideLoading();
+
+          if (cfRes.result && cfRes.result.success) {
+            wx.showToast({ title: '已删除', icon: 'success' });
+            setTimeout(() => wx.navigateBack(), 1000);
+          } else {
+            wx.showToast({ title: cfRes.result.message || '删除失败', icon: 'none' });
+            this.setData({ isOperating: false });
+          }
+        } catch (err) {
+          wx.hideLoading();
+          wx.showToast({ title: '删除失败', icon: 'error' });
           this.setData({ isOperating: false });
         }
       }

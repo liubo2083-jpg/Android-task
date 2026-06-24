@@ -1,0 +1,39 @@
+page { background: #f8f8f8; }
+
+.loading-page { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 80vh; color: #999; font-size: 26rpx; }
+.loading-spinner { width: 50rpx; height: 50rpx; border: 4rpx solid #f0f0f0; border-top-color: #ff6b35; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 20rpx; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.container { padding: 20rpx; }
+
+.order-info { background: #fff; border-radius: 16rpx; padding: 24rpx; display: flex; align-items: center; gap: 16rpx; margin-bottom: 20rpx; }
+.order-info .label { font-size: 26rpx; color: #999; flex-shrink: 0; }
+.order-info .value { font-size: 24rpx; color: #333; }
+.order-info .mono { font-family: monospace; }
+
+.review-card { background: #fff; border-radius: 16rpx; padding: 24rpx; margin-bottom: 16rpx; }
+
+.dish-row { display: flex; align-items: center; margin-bottom: 20rpx; padding-bottom: 16rpx; border-bottom: 1rpx solid #f5f5f5; }
+.dish-img { width: 80rpx; height: 80rpx; border-radius: 10rpx; background: #f5f5f5; margin-right: 14rpx; }
+.dish-name { font-size: 30rpx; font-weight: 600; color: #333; }
+
+.field-row { display: flex; align-items: flex-start; margin-bottom: 16rpx; }
+.field-label { font-size: 26rpx; color: #666; width: 80rpx; flex-shrink: 0; padding-top: 4rpx; }
+
+.stars { display: flex; gap: 8rpx; }
+.star { font-size: 44rpx; color: #e0e0e0; padding: 4rpx; }
+.star.active { color: #ffb400; }
+
+.review-input { flex: 1; min-height: 80rpx; background: #f8f8f8; border-radius: 10rpx; padding: 14rpx; font-size: 26rpx; color: #333; }
+
+.img-list { flex: 1; display: flex; flex-wrap: wrap; gap: 12rpx; }
+.img-item { position: relative; width: 120rpx; height: 120rpx; }
+.img-preview { width: 120rpx; height: 120rpx; border-radius: 10rpx; }
+.img-del { position: absolute; top: -8rpx; right: -8rpx; width: 32rpx; height: 32rpx; background: rgba(0,0,0,0.5); color: #fff; border-radius: 50%; text-align: center; line-height: 32rpx; font-size: 22rpx; }
+.img-btn { width: 120rpx; height: 120rpx; border: 2rpx dashed #ddd; border-radius: 10rpx; display: flex; align-items: center; justify-content: center; }
+.img-btn-icon { font-size: 48rpx; color: #ccc; }
+.img-btn.uploading { background: #f8f8f8; }
+.img-btn.uploading .img-btn-icon { font-size: 28rpx; color: #999; }
+
+.submit-btn { margin-top: 20rpx; height: 88rpx; line-height: 88rpx; background: linear-gradient(135deg, #ff6b35, #ff8c5a); color: #fff; border-radius: 44rpx; font-size: 32rpx; font-weight: 600; border: none; }
+.submit-btn[disabled] { opacity: 0.5; }
